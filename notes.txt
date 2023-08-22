@@ -1,0 +1,6 @@
+# add env file
+# add google oAuth
+# if logged in then dont take to signUP and longin page
+
+
+# host the frontend and backend to different places 
