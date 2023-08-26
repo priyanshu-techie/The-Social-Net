@@ -20,6 +20,9 @@ router.get('/signup',(req,res)=>{
 router.get('/protected',(req,res)=>{
     res.render('protected');
 })
+router.get('/profile',(req,res)=>{
+    res.render('profilePage.ejs');
+})
 
 const beforLoginMiddleware=async (req,res,next)=>{
     try{

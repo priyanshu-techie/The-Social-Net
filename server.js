@@ -7,6 +7,7 @@ const session=require('express-session');
 const MongoStore = require('connect-mongo');
 const flash=require('express-flash');
 
+app.use(express.static(__dirname+'/public'));
 
 // for accessin req.body
 app.use(express.urlencoded({extended:true}))
