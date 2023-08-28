@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <title>Feed</title>
+</head>
+<body>
+    <%- include('components/header') %>
+
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-lg-6 col-md-12 fs-4">
+                <!-- top profile info -->
+                <div class="mb-2">
+                    <img src="images/f.jpg" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                    <span style="font-size: 1rem;">Priyanshu_11</span>
+                </div>
+
+                <img src="images/a.jpg" class="w-100 " alt="">
+                <!-- likes and comment  -->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 fs-3">
+                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span>5</span>
+                        </div>
+                        <div class="col-10">
+                            <div class="fs-6 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur autem veniam nostrum ea hic deleniti incidunt animi dignissimos labore dolor?</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12">
+                <!-- top profile image -->
+                <div class="mb-2">
+                    <img src="images/h.jpg" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                    <span style="font-size: 1rem;">Jackie_4576</span>
+                </div>
+                <img src="images/b.jpg" class="w-100 " alt="">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 fs-3">
+                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span>5</span>
+                        </div>
+                        <div class="col-10">
+                            <div class="fs-6 "></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js" integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/e41ece5b99.js" crossorigin="anonymous"></script>
+    <script>
+        function increaseLike(elem){
+            let parent=elem.parentNode;
+            let likeCount=parent.childNodes[3];
+            let likes=Number(likeCount.innerText);
+
+            if(elem.classList.contains('fa-regular')){
+                elem.classList.remove('fa-regular');
+                elem.classList.add('fa-solid');
+                elem.style.color='#ff0000';
+                likes++;
+            }
+            else{
+                elem.classList.remove('fa-solid');
+                elem.classList.add('fa-regular');
+                elem.style.color='black';
+                likes--;
+            }
+            likeCount.innerText=likes;
+
+            // also post  the info to the backend
+            }
+    </script>
+</body>
+</html>

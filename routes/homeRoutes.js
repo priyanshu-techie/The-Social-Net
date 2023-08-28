@@ -23,6 +23,12 @@ router.get('/protected',(req,res)=>{
 router.get('/profile',(req,res)=>{
     res.render('profilePage.ejs');
 })
+router.get('/feed',(req,res)=>{
+    res.render('feeds.ejs');
+})
+router.get('/post',(req,res)=>{
+    res.render('individualPost.ejs');
+})
 
 const beforLoginMiddleware=async (req,res,next)=>{
     try{
