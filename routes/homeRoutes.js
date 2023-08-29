@@ -7,6 +7,8 @@ const Users= require('../config/userSchemas');
 const { genPassword,validatePassword }=require('../utils/passportUtils');
 const passport =require('../config/passport')
 
+const ensureAuth= require('../utils/middlewares');
+
 router.get('/',(req,res)=>{
     res.render('index.ejs');
 })
@@ -17,17 +19,20 @@ router.get('/signup',(req,res)=>{
     res.render('signup.ejs',{err:false})
 })
 // prevent unauthorise access and all
-router.get('/protected',(req,res)=>{
+router.get('/protected',ensureAuth,(req,res)=>{
     res.render('protected');
 })
-router.get('/profile',(req,res)=>{
+router.get('/profile',ensureAuth,(req,res)=>{
     res.render('profilePage.ejs');
 })
-router.get('/feed',(req,res)=>{
+router.get('/feed',ensureAuth,(req,res)=>{
     res.render('feeds.ejs');
 })
-router.get('/post',(req,res)=>{
+router.get('/post',ensureAuth,(req,res)=>{
     res.render('individualPost.ejs');
+})
+router.get('/newpost',ensureAuth,(req,res)=>{
+    res.render('newPost.ejs');
 })
 
 const beforLoginMiddleware=async (req,res,next)=>{
