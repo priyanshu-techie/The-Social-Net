@@ -2,12 +2,12 @@ const express=require('express');
 const router= express.Router();
 const validator = require('validator');
 // the user model 
-const Users= require('../config/userSchemas');
+const Users= require('../Models/userSchemas');
 // generate password function to get the hash to save the password 
 const { genPassword,validatePassword }=require('../utils/passportUtils');
 const passport =require('../config/passport')
 
-const ensureAuth= require('../utils/middlewares');
+const {ensureAuth, setCacheControl}= require('../utils/middlewares');
 
 router.get('/',(req,res)=>{
     res.render('index.ejs');
@@ -19,19 +19,16 @@ router.get('/signup',(req,res)=>{
     res.render('signup.ejs',{err:false})
 })
 // prevent unauthorise access and all
-router.get('/protected',ensureAuth,(req,res)=>{
-    res.render('protected');
-})
-router.get('/profile',ensureAuth,(req,res)=>{
+router.get('/profile',setCacheControl,ensureAuth,(req,res)=>{
     res.render('profilePage.ejs');
 })
-router.get('/feed',ensureAuth,(req,res)=>{
+router.get('/feed',setCacheControl,ensureAuth,(req,res)=>{
     res.render('feeds.ejs');
 })
-router.get('/post',ensureAuth,(req,res)=>{
+router.get('/post',setCacheControl,ensureAuth,(req,res)=>{
     res.render('individualPost.ejs');
 })
-router.get('/newpost',ensureAuth,(req,res)=>{
+router.get('/newpost',setCacheControl,ensureAuth,(req,res)=>{
     res.render('newPost.ejs');
 })
 
@@ -64,7 +61,7 @@ const beforLoginMiddleware=async (req,res,next)=>{
 }
 
 router.post('/login',beforLoginMiddleware,passport.authenticate('local', {
-    successRedirect: '/protected',
+    successRedirect: '/feed',
     failureRedirect: '/login'
 }))
 
@@ -117,13 +114,19 @@ router.post('/signup',async (req,res)=>{
         // if creates a user session and abstracts all these things for us
         req.login(newUser, function(err) {
             if (err) { return next(err); }
-            res.redirect('/protected');
+            res.redirect('/feed');
           });
     }
     catch(e){
         res.render('signup',{err:true,msg:"Some error occoured!!"})
         console.log(e);
     }
+})
+
+// adding new post 
+
+router.post('/addNewPost',(req,res)=>{
+    
 })
 
 

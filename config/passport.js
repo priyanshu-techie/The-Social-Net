@@ -1,6 +1,6 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
-const  Users = require('./userSchemas');
+const  Users = require('../Models/userSchemas');
 const  { validatePassword }  = require('../utils/passportUtils');
 
 // setting up passport

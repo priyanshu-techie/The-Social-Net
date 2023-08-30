@@ -3,27 +3,27 @@ const mongoose=require('mongoose')
 const userSchema=new mongoose.Schema({
     userId:{
         type:String,
-        Required:true
+        required:true
     },
     firstName:{
         type:String,
-        Required:true
+        required:true
     },
     lastName:{
         type:String,
-        Required:true
+        required:true
     },
     email:{
         type:String,
-        Required:true
+        required:true
     },
     salt:{
         type:String,
-        Required:true
+        required:true
     },
     hash:{
         type:String,
-        Required:true
+        required:true
     }
 })
 

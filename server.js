@@ -13,6 +13,9 @@ app.use(express.static(__dirname+'/public'));
 app.use(express.urlencoded({extended:true}))
 app.use(express.json());
 
+// using dot env
+require("dotenv").config({path:"./config/.env"});
+
 connect();
 
 app.use(flash());

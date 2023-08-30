@@ -10,7 +10,7 @@
     <%- include('components/header') %>
 
 
-    <form action="/addNewPost" method="post" class="m-5 w-75 ps-5 ">
+    <form action="/addNewPost" method="post" class="m-5 w-75 ps-5 " enctype="multipart/form-data">
         <div class="mb-3">
             <label for="newPost" class="form-label">Image</label>
             <input id="newPost" class="form-control" name="newPost" type="file" required>
