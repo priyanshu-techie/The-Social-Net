@@ -1,6 +1,7 @@
 const express=require('express');
 const app=express();
 const connect =require('./config/db');
+const authRoutes = require('./routes/authRoutes');
 const homeRoutes = require('./routes/homeRoutes');
 const passport=require('./config/passport');
 const session=require('express-session');
@@ -41,7 +42,7 @@ app.use(passport.authenticate('session'));
 
 
 
-app.use('/',homeRoutes);
+app.use('/',authRoutes);
 
 app.listen(8000,()=>{
     console.log("Server running at http://localhost:8000");
