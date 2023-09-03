@@ -8,7 +8,7 @@ const session=require('express-session');
 const MongoStore = require('connect-mongo');
 const flash=require('express-flash');
 
-app.use(express.static(__dirname+'/public'));
+app.use(express.static('public'));
 
 // for accessin req.body
 app.use(express.urlencoded({extended:true}))
@@ -43,6 +43,7 @@ app.use(passport.authenticate('session'));
 
 
 app.use('/',authRoutes);
+app.use('/user',homeRoutes);
 
 app.listen(8000,()=>{
     console.log("Server running at http://localhost:8000");

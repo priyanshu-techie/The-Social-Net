@@ -7,8 +7,6 @@ const Users= require('../Models/userSchemas');
 const { genPassword,validatePassword }=require('../utils/passportUtils');
 const passport =require('../config/passport')
 
-const {ensureAuth, setCacheControl}= require('../utils/middlewares');
-
 router.get('/',(req,res)=>{
     res.render('index.ejs');
 })
@@ -17,19 +15,6 @@ router.get('/login',(req,res)=>{
 })
 router.get('/signup',(req,res)=>{
     res.render('signup.ejs',{err:false})
-})
-// prevent unauthorise access and all
-router.get('/profile',setCacheControl,ensureAuth,(req,res)=>{
-    res.render('profilePage.ejs');
-})
-router.get('/feed',setCacheControl,ensureAuth,(req,res)=>{
-    res.render('feeds.ejs');
-})
-router.get('/post',setCacheControl,ensureAuth,(req,res)=>{
-    res.render('individualPost.ejs');
-})
-router.get('/newpost',setCacheControl,ensureAuth,(req,res)=>{
-    res.render('newPost.ejs');
 })
 
 const beforLoginMiddleware=async (req,res,next)=>{
@@ -61,7 +46,7 @@ const beforLoginMiddleware=async (req,res,next)=>{
 }
 
 router.post('/login',beforLoginMiddleware,passport.authenticate('local', {
-    successRedirect: '/feed',
+    successRedirect: '/user/feed',
     failureRedirect: '/login'
 }))
 
@@ -123,11 +108,6 @@ router.post('/signup',async (req,res)=>{
     }
 })
 
-// adding new post 
-
-router.post('/addNewPost',(req,res)=>{
-    
-})
 
 
 module.exports = router;
