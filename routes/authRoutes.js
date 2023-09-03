@@ -7,7 +7,16 @@ const Users= require('../Models/userSchemas');
 const { genPassword,validatePassword }=require('../utils/passportUtils');
 const passport =require('../config/passport')
 
-router.get('/',(req,res)=>{
+// take directly to the home page without going to the index
+function ifAuthenticated(req,res,next){
+    if(req.isAuthenticated()){
+        res.redirect('/user/feed');
+    }
+    else{
+        next();
+    }
+}
+router.get('/',ifAuthenticated,(req,res)=>{
     res.render('index.ejs');
 })
 router.get('/login',(req,res)=>{

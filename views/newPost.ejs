@@ -9,8 +9,12 @@
 <body>
     <%- include('components/header') %>
 
+    <!-- flash message  -->
+    <% if (locals.messages.errors!==undefined) { %>
+        <div class="alert alert-danger"><%= locals.messages.errors %></div>
+    <% } %>
 
-    <form action="/addNewPost" method="post" class="m-5 w-75 ps-5 " enctype="multipart/form-data">
+    <form action="/user/addNewPost" method="post" class="m-5 w-75 ps-5 " enctype="multipart/form-data">
         <div class="mb-3">
             <label for="newPost" class="form-label">Image</label>
             <input id="newPost" class="form-control" name="newPost" type="file" required>

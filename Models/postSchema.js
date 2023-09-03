@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const PostSchema = new mongoose.Schema({
   // stores the public url
-    image: {
+  image: {
     type: String,
     require: true,
   },

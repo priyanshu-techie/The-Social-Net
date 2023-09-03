@@ -7,6 +7,7 @@ const passport=require('./config/passport');
 const session=require('express-session');
 const MongoStore = require('connect-mongo');
 const flash=require('express-flash');
+const PORT = process.env.PORT || 8000
 
 app.use(express.static('public'));
 
@@ -28,10 +29,10 @@ app.use(passport.initialize());
 // setting express session
 
 app.use(session({
-  secret: "any random secret",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
-  store: MongoStore.create( { mongoUrl:'mongodb+srv://Priyanshu_Agrawal:pass123456@cluster0.zj4gcnz.mongodb.net/the_social_net'}),
+  store: MongoStore.create( { mongoUrl:process.env.DB_STRING}),
   cookie:{
     maxAge:1000*3600*24*7 // expires at 7 days 
   }
@@ -45,8 +46,8 @@ app.use(passport.authenticate('session'));
 app.use('/',authRoutes);
 app.use('/user',homeRoutes);
 
-app.listen(8000,()=>{
-    console.log("Server running at http://localhost:8000");
+app.listen(PORT,()=>{
+    console.log(`Server running at port ${PORT}`);
 })
 
 
