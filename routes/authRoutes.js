@@ -108,7 +108,7 @@ router.post('/signup',async (req,res)=>{
         // if creates a user session and abstracts all these things for us
         req.login(newUser, function(err) {
             if (err) { return next(err); }
-            res.redirect('/feed');
+            res.redirect('/user/feed');
           });
     }
     catch(e){

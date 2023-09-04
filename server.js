@@ -41,7 +41,10 @@ app.use(session({
 // setting passport session
 app.use(passport.authenticate('session'));
 
-
+// it cathes the error of any async operation which doesnt has a catch part
+process.on('unhandledRejection', error => {
+  console.log('unhandledRejection', error.message);
+});
 
 app.use('/',authRoutes);
 app.use('/user',homeRoutes);

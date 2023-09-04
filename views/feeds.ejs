@@ -10,46 +10,60 @@
     <%- include('components/header') %>
 
     <div class="container">
+        <% for(let i=0;i<posts.length;i=i+2){ %>
         <div class="row mb-4">
             <div class="col-lg-6 col-md-12 fs-4">
                 <!-- top profile info -->
                 <div class="mb-2">
-                    <img src="/images/f.jpg" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                    <span style="font-size: 1rem;">Priyanshu_11</span>
+                    <img src="<%=postProfileImage[i]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                    <span style="font-size: 1rem;"><%=postCreator[i]%></span>
                 </div>
 
-                <img src="/images/a.jpg" class="w-100 " alt="">
+                <img src='<%= posts[i].image %>' class="w-100 " alt="">
                 <!-- likes and comment  -->
                 <div class="container">
                     <div class="row">
                         <div class="col-2 fs-3">
-                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span>5</span>
+                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span><%=posts[i].likes%></span>
                         </div>
                         <div class="col-10">
-                            <div class="fs-6 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur autem veniam nostrum ea hic deleniti incidunt animi dignissimos labore dolor?</div>
+                            <div class="fs-6 "><%= posts[i].caption %></div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-12">
-                <!-- top profile image -->
-                <div class="mb-2">
-                    <img src="/images/h.jpg" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                    <span style="font-size: 1rem;">Jackie_4576</span>
-                </div>
-                <img src="/images/b.jpg" class="w-100 " alt="">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-2 fs-3">
-                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span>5</span>
-                        </div>
-                        <div class="col-10">
-                            <div class="fs-6 "></div>
+            <%if(posts[i+1]!=undefined) {%>
+                <div class="col-lg-6 col-md-12">
+                    <!-- top profile image -->
+                    <div class="mb-2">
+                        <img src="<%=postProfileImage[i+1]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                        <span style="font-size: 1rem;"><%=postCreator[i+1]%></span>
+                    </div>
+                    <img src="<%= posts[i+1].image%>" class="w-100 " alt="">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2 fs-3">
+                                <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span><%=posts[i].likes%></span>
+                            </div>
+                            <div class="col-10">
+                                <div class="fs-6 "><%= posts[i+1].caption %></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <%}%>
         </div>        
+        <% } %>
     </div>
 
+    <!-- 
+        logic for the for loop to display odd no of posts
+                     👇👇
+        let arr= ['a','b','c','d','e','f','g','h','i']
+        for(let i=0;i<9;i=i+2){
+            console.log(arr[i]);
+            if(arr[i+1]!=undefined)
+                console.log(arr[i+1]);
+        }
+     -->
     <%- include('components/footer') %>
