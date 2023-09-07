@@ -18,8 +18,9 @@
                     <img src="<%=postProfileImage[i]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
                     <span style="font-size: 1rem;"><%=postCreator[i]%></span>
                 </div>
-
-                <img src='<%= posts[i].image %>' class="w-100 " alt="">
+                <a href="/user/post/<%= posts[i]._id%>">
+                    <img src='<%= posts[i].image %>' class="w-100 " alt="">
+                </a>
                 <!-- likes and comment  -->
                 <div class="container">
                     <div class="row">
@@ -39,7 +40,9 @@
                         <img src="<%=postProfileImage[i+1]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
                         <span style="font-size: 1rem;"><%=postCreator[i+1]%></span>
                     </div>
-                    <img src="<%= posts[i+1].image%>" class="w-100 " alt="">
+                    <a href="/user/post/<%= posts[i+1]._id%>">
+                        <img src="<%= posts[i+1].image%>" class="w-100 " alt="">
+                    </a>
                     <div class="container">
                         <div class="row">
                             <div class="col-2 fs-3">

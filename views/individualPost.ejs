@@ -14,19 +14,19 @@
             <div class="col">
                 <!-- top profile info -->
                 <div class="mb-2">
-                    <img src="/images/f.jpg" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                    <span style="font-size: 1rem;">Priyanshu_11</span>
+                    <img src="<%=profileImage%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                    <span style="font-size: 1rem;"><%=name%></span>
                 </div>
 
-                <img src="/images/a.jpg" class="w-100 " alt="">
+                <img src="<%=post.image%>" class="w-100 " alt="">
                 <!-- likes and comment  -->
                 <div class="container">
                     <div class="row">
                         <div class="col-2 fs-3">
-                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span>5</span>
+                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span><%= post.likes %></span>
                         </div>
                         <div class="col-10">
-                            <div class="fs-6 ">Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur autem veniam nostrum ea hic deleniti incidunt animi dignissimos labore dolor?</div>
+                            <div class="fs-6 "> <%=post.caption%> </div>
                         </div>
                     </div>
                 </div>

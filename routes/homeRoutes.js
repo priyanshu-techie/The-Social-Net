@@ -33,9 +33,24 @@ router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
     // async await is not blocking, once the posts are fetched, this line is executed: hence was getting empty arrays
     res.render('feeds.ejs',{posts, postProfileImage, postCreator});
 })
-router.get('/post',setCacheControl,ensureAuth,(req,res)=>{
-    res.render('individualPost.ejs');
+
+
+router.get('/post/:id',setCacheControl,ensureAuth,async(req,res)=>{
+  try{
+    let postId = req.params.id;
+    let post = await PostModel.findById(postId).lean();
+    let user = await Users.findById(post.user).lean();
+
+    res.render('individualPost.ejs',{post,name:user.userId,profileImage:user.profilePic});
+  }
+  catch(err){
+    // if the user tries to enter a wrong url for the id part then redirect it to the feed
+    console.log("user tried to enter a wrong url for individual post.");
+    res.redirect("/user/feed");
+  }
 })
+
+
 router.get('/newpost',setCacheControl,ensureAuth,(req,res)=>{
     res.render('newPost.ejs');
 })
