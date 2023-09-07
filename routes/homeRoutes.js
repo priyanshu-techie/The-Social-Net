@@ -31,7 +31,6 @@ router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
     await Promise.all(promises);
 
     // async await is not blocking, once the posts are fetched, this line is executed: hence was getting empty arrays
-    console.log(postProfileImage,postCreator);
     res.render('feeds.ejs',{posts, postProfileImage, postCreator});
 })
 router.get('/post',setCacheControl,ensureAuth,(req,res)=>{
