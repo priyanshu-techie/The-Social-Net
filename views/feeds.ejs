@@ -15,8 +15,8 @@
             <div class="col-lg-6 col-md-12 fs-4">
                 <!-- top profile info -->
                 <div class="mb-2">
-                    <img src="<%=postProfileImage[i]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                    <span style="font-size: 1rem;"><%=postCreator[i]%></span>
+                    <img src="<%=posts[i].postCreator[0].profilePic%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                    <span style="font-size: 1rem;"><%=posts[i].postCreator[0].userId%></span>
                 </div>
                 <a href="/user/post/<%= posts[i]._id%>">
                     <img src='<%= posts[i].image %>' class="w-100 " alt="">
@@ -37,8 +37,8 @@
                 <div class="col-lg-6 col-md-12">
                     <!-- top profile image -->
                     <div class="mb-2">
-                        <img src="<%=postProfileImage[i+1]%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                        <span style="font-size: 1rem;"><%=postCreator[i+1]%></span>
+                        <img src="<%=posts[i+1].postCreator[0].profilePic%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
+                        <span style="font-size: 1rem;"><%=posts[i+1].postCreator[0].userId%></span>
                     </div>
                     <a href="/user/post/<%= posts[i+1]._id%>">
                         <img src="<%= posts[i+1].image%>" class="w-100 " alt="">

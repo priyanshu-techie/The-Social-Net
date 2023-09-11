@@ -16,7 +16,7 @@ router.get('/profile',setCacheControl,ensureAuth,async (req,res)=>{
 
 router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
   let posts = await  PostModel.aggregate([{
-      $project:{ specifications:{__v:0} } // i want to get all the data
+      $project:{ cloudinaryId:0, _id:0, __v:0 } // i want to get all the data except these values
     },
     // sort the items in desending 
     {
