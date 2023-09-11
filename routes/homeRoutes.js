@@ -15,23 +15,42 @@ router.get('/profile',setCacheControl,ensureAuth,async (req,res)=>{
 })
 
 router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
-    let postProfileImage=[];
-    let postCreator=[];
-    let posts = await PostModel.find({}).sort({createdAt:'descending'}).lean();
-    // here we are making individual requests to the db for each post, this is inefficient
-
-    // using map as it is returning an array of promises(async function retunrns a resolved promise)
-    let promises = posts.map(async (post) => {
-      let user = await Users.findById(post.user);
-      postProfileImage.push(user.profilePic);
-      postCreator.push(user.userId);
-    })
-    // Creates a Promise that is resolved with an array of results when all of the provided Promises resolve, or rejected when any Promise is rejected.
-    // this is helping to block
-    await Promise.all(promises);
-
-    // async await is not blocking, once the posts are fetched, this line is executed: hence was getting empty arrays
-    res.render('feeds.ejs',{posts, postProfileImage, postCreator});
+  let posts = await  PostModel.aggregate([{
+      $project:{ specifications:{__v:0} } // i want to get all the data
+    },
+    // sort the items in desending 
+    {
+      $sort:{ "createdAt": -1}
+    },
+    // using the users document to get the post creator
+    {
+      $lookup:
+      {
+        from: "users",
+        localField: "user",
+        foreignField: "_id",
+        as: "postCreator",
+        pipeline: [
+          {
+            $project: {
+              userId: 1,
+              profilePic: 1,
+            },
+          },
+        ],
+      }
+      /**
+             * from: The target collection.
+             * localField: The local join field.
+             * foreignField: The target join field.
+             * as: The name for the results.
+             * pipeline: Optional pipeline to run on the foreign collection.
+             * let: Optional variables to use in the pipeline field stages.
+      */
+    }
+  ])
+  res.render('feeds.ejs',{posts});
+  
 })
 
 
