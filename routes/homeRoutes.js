@@ -7,16 +7,16 @@ const upload = require('../config/multer');
 const cloudinary= require('../config/cloudinary')
 
 
-// prevent unauthorise access and all
+// get the profile page
 router.get('/profile',setCacheControl,ensureAuth,async (req,res)=>{
     let profileInfo = await Users.findById(req.user.id);
     let posts = await PostModel.find({user:req.user.id}).sort({createdAt:'descending'}).lean();
     res.render('profilePage.ejs',{ posts, profileInfo});
 })
-
+// get the feed 
 router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
   let posts = await  PostModel.aggregate([{
-      $project:{ cloudinaryId:0, _id:0, __v:0 } // i want to get all the data except these values
+      $project:{ cloudinaryId:0, __v:0 } // i want to get all the data except these values
     },
     // sort the items in desending 
     {
@@ -53,7 +53,7 @@ router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
   
 })
 
-
+// get individual post 
 router.get('/post/:id',setCacheControl,ensureAuth,async(req,res)=>{
   try{
     let postId = req.params.id;
@@ -69,14 +69,13 @@ router.get('/post/:id',setCacheControl,ensureAuth,async(req,res)=>{
   }
 })
 
-
+// page to upload a new post
 router.get('/newpost',setCacheControl,ensureAuth,(req,res)=>{
     res.render('newPost.ejs');
 })
 
 
 // adding new post 
-
 router.post('/addNewPost', upload.single("newPost"), async (req,res)=>{
     try {
         // Upload image to cloudinary
@@ -96,6 +95,21 @@ router.post('/addNewPost', upload.single("newPost"), async (req,res)=>{
         req.flash('errors',"Some error occoured. Try again !");
         return res.redirect('/user/newpost');
       }
+})
+
+router.put('/likePost/:id',async(req,res)=>{
+  try{
+    await PostModel.findByIdAndUpdate(req.params.id,{
+      $inc:{likes:1}
+    })
+    //
+    console.log("post liked");
+    //
+    res.status(200).send("post liked");
+  }
+  catch(e){
+    console.error(e);
+  }
 })
 
 module.exports= router;

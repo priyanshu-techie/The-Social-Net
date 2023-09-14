@@ -3,7 +3,6 @@ const app=express();
 const connect =require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const homeRoutes = require('./routes/homeRoutes');
-const methodOverride = require("method-override");
 const passport=require('./config/passport');
 const session=require('express-session');
 const MongoStore = require('connect-mongo');
@@ -20,9 +19,6 @@ app.use(express.json());
 require("dotenv").config({path:"./config/.env"});
 
 connect();
-
-//Use forms for put / delete
-app.use(methodOverride("_method"));
 
 app.use(flash());
 app.set('view engine','ejs');

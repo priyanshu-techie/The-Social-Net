@@ -16,6 +16,4 @@ function increaseLike(elem){
         likes--;
     }
     likeCount.innerText=likes;
-
-    // also post  the info to the backend
     }
