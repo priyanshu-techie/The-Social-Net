@@ -4,7 +4,7 @@ const PostModel= require('../Models/postSchema');
 const Users = require('../Models/userSchemas');
 const {ensureAuth, setCacheControl}= require('../utils/middlewares');
 const upload = require('../config/multer');
-const cloudinary= require('../config/cloudinary')
+const cloudinary= require('../config/cloudinary');
 
 
 // get the profile page
@@ -49,7 +49,7 @@ router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
       */
     }
   ])
-  res.render('feeds.ejs',{posts});
+  res.render('feeds.ejs',{ posts, currUser:req.user.id });
   
 })
 
@@ -60,7 +60,7 @@ router.get('/post/:id',setCacheControl,ensureAuth,async(req,res)=>{
     let post = await PostModel.findById(postId).lean();
     let user = await Users.findById(post.user).lean();
 
-    res.render('individualPost.ejs',{post,name:user.userId,profileImage:user.profilePic});
+    res.render('individualPost.ejs',{post,name:user.userId,profileImage:user.profilePic,currUser:req.user.id});
   }
   catch(err){
     // if the user tries to enter a wrong url for the id part then redirect it to the feed
@@ -97,18 +97,35 @@ router.post('/addNewPost', upload.single("newPost"), async (req,res)=>{
       }
 })
 
+// like the post
 router.put('/likePost/:id',async(req,res)=>{
   try{
     await PostModel.findByIdAndUpdate(req.params.id,{
-      $inc:{likes:1}
+      $inc:{likes:1}, // adding liked by whome 
+      $push:{likedBy: req.user.id}
     })
-    //
-    console.log("post liked");
-    //
     res.status(200).send("post liked");
   }
   catch(e){
     console.error(e);
+    // ?? doubtful if this is a correct way
+    res.status(500).send("some error occoured");
+  }
+})
+
+// remove the like from the post 
+router.put('/unLikePost/:id',async(req,res)=>{
+  try{
+    await PostModel.findByIdAndUpdate(req.params.id,{
+      $inc:{likes:-1},
+      $pull:{likedBy: req.user.id}
+    })
+    res.status(200).send("post like removed");
+  }
+  catch(e){
+    console.error(e);
+    // ?? doubtful if this is a correct way
+    res.status(500).send("some error occoured")
   }
 })
 

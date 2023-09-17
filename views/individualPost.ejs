@@ -22,8 +22,8 @@
                 <!-- likes and comment  -->
                 <div class="container">
                     <div class="row">
-                        <div class="col-2 fs-3">
-                            <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseLike(this)"></i> <span><%= post.likes %></span>
+                        <div class="col-2 fs-3" data-id="<%=post._id%>" >
+                            <i class="<%=post.likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular' %> fa-heart" style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span><%= post.likes %></span>
                         </div>
                         <div class="col-10">
                             <div class="fs-6 "> <%=post.caption%> </div>

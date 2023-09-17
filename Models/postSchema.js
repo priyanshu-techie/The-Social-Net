@@ -19,6 +19,12 @@ const PostSchema = new mongoose.Schema({
     required: true,
     default:0
   },
+  // who liked the post
+  likedBy:{
+    type:[mongoose.Schema.Types.ObjectId],
+    default:[]
+  },
+  // person that created that post 
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
