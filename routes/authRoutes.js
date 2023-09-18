@@ -106,6 +106,8 @@ router.post('/signup',async (req,res)=>{
         // passport functionality
         // longin method is added to the req object my passport 
         // if creates a user session and abstracts all these things for us
+
+        console.log("new user created");
         req.login(newUser, function(err) {
             if (err) { return next(err); }
             res.redirect('/user/feed');

@@ -15,9 +15,7 @@ router.get('/profile',setCacheControl,ensureAuth,async (req,res)=>{
 })
 // get the feed 
 router.get('/feed',setCacheControl,ensureAuth, async(req,res)=>{
-  let posts = await  PostModel.aggregate([{
-      $project:{ cloudinaryId:0, __v:0 } // i want to get all the data except these values
-    },
+  let posts = await  PostModel.aggregate([
     // sort the items in desending 
     {
       $sort:{ "createdAt": -1}
@@ -126,6 +124,18 @@ router.put('/unLikePost/:id',async(req,res)=>{
     console.error(e);
     // ?? doubtful if this is a correct way
     res.status(500).send("some error occoured")
+  }
+})
+
+router.post('/deletePost/:id',async (req,res)=>{
+  let postId =req.params.id;
+  try {
+    let post =await PostModel.findById(postId);
+    await cloudinary.uploader.destroy(post.cloudinaryId);
+    await PostModel.findByIdAndDelete(postId);
+    res.status(200).send("post deleted");
+  } catch (e) {
+    console.log(e);
   }
 })
 

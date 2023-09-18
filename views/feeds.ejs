@@ -25,7 +25,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-2 fs-3" data-id="<%=posts[i]._id%>" >
-                            <i class="<%=posts[i].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular' %> fa-heart" style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i].likes%></span>
+                            <i class="<%=posts[i].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i].likes%></span>
                         </div>
                         <div class="col-10">
                             <div class="fs-6 "><%= posts[i].caption %></div>
@@ -47,7 +47,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-2 fs-3" data-id="<%=posts[i+1]._id%>">
-                                <i class="<%=posts[i+1].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular' %> fa-heart" style="cursor: pointer; color: #ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i+1].likes%></span>
+                                <i class="<%=posts[i+1].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color: #ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i+1].likes%></span>
                             </div>
                             <div class="col-10">
                                 <div class="fs-6 "><%= posts[i+1].caption %></div>

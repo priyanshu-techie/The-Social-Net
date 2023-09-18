@@ -1,1 +1,2 @@
 # host the frontend and backend to different places 
+# PROJECT DISCRIPTION: A SOCIAL MEDIA APP WHERE YOU CAN SEE THE POSTS LIKE AND COMMENT AND SHARE
