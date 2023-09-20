@@ -44,10 +44,49 @@ async function deletePost(elem){
     const parent=elem.parentNode
     const postId =parent.dataset.id
     try {
-        await fetch(`/user/deletePost/${postId}`,{method:"post"})
+        await fetch(`/user/deletePost/${postId}`,{method:"delete"})
         window.location.href='/user/feed';
     } catch (e) {
         console.error(e);
     }
     
 }
+
+async function addComment(){
+    const input = document.getElementById('commentBox');
+    const commentsContainer = document.getElementById('commentsContainer');
+    const comment = input.value;
+    // if the comment is empty with just spaces then return
+    if(comment.replace(/\s/g, '') === "") {input.value=""; return;}
+
+    const postId = input.parentElement.dataset.id;
+    try {
+        await fetch('/user/post/comment',{
+            method:'post',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({
+                comment:comment,
+                postId: postId
+                // the user who made the comment, this info the server can have from req.user 
+            })
+        })
+        input.value="";
+        
+        // pushing the comment to the frontend
+        const response = await fetch('/user/post/comment/getCommenterDetails'); // get details from current logged in user , caz he/she is only making the comment 
+        const data =await response.json();
+
+        let newDiv = document.createElement('div');
+        newDiv.innerHTML= `
+                    <div style="font-size: 0.7rem;"> <img src="${data.profilePic}" style="width:1em; margin-right: 1em;">${data.userId}</div> 
+                    <p>${comment} </p>
+        `
+        commentsContainer.appendChild(newDiv);
+    } catch (err) {
+        console.error(err);
+    }
+    // frontend me commnet push kro 
+}
+

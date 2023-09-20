@@ -4,11 +4,11 @@ const PostSchema = new mongoose.Schema({
   // stores the public url
   image: {
     type: String,
-    require: true,
+    required: true,
   },
   cloudinaryId: {
     type: String,
-    require: true,
+    required: true,
   },
   caption: {
     type: String,

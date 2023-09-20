@@ -52,6 +52,3 @@ app.use('/user',homeRoutes);
 app.listen(PORT,()=>{
     console.log(`Server running at port ${PORT}`);
 })
-
-
-// if logged in , dont take to the index, login or signUP
