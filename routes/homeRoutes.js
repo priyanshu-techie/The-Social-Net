@@ -11,10 +11,38 @@ const mongoose = require('mongoose')
 
 // get the profile page
 router.get('/profile', setCacheControl, ensureAuth, async (req, res) => {
-  let profileInfo = await Users.findById(req.user.id);
-  let posts = await PostModel.find({ user: req.user.id }).sort({ createdAt: 'descending' }).lean();
-  res.render('profilePage.ejs', { posts, profileInfo });
+  let objIdOfCurrUser = new mongoose.Types.ObjectId(req.user.id);
+  let profileInfo = await Users.aggregate([
+    {$match:{ _id : objIdOfCurrUser }},
+    {$lookup:
+      {
+        from: 'posts',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'posts'
+      }
+    }
+  ])
+  res.render('profilePage.ejs', { profileInfo });
 })
+
+// get profile page of different users
+router.get('/profile/:id', setCacheControl, ensureAuth, async (req, res) => {
+  let objIdOfCurrUser = new mongoose.Types.ObjectId(req.params.id);
+  let profileInfo = await Users.aggregate([
+    {$match:{ _id : objIdOfCurrUser }},
+    {$lookup:
+      {
+        from: 'posts',
+        localField: '_id',
+        foreignField: 'user',
+        as: 'posts'
+      }
+    }
+  ])
+  res.render('profilePage.ejs', { profileInfo });
+})
+
 // get the feed 
 router.get('/feed', setCacheControl, ensureAuth, async (req, res) => {
   let posts = await PostModel.aggregate([
@@ -35,6 +63,7 @@ router.get('/feed', setCacheControl, ensureAuth, async (req, res) => {
             $project: {
               userId: 1,
               profilePic: 1,
+              _id:1
             },
           },
         ],
@@ -67,7 +96,7 @@ router.get('/post/:id', setCacheControl, ensureAuth, async (req, res) => {
         localField: "user",
         foreignField: "_id",
         as: "postCreator",
-        pipeline: [{$project:{userId: 1,profilePic: 1}}]
+        pipeline: [{$project:{userId: 1,profilePic: 1,_id:1}}]
       }},
     //get the comments
     {$lookup:{
@@ -84,7 +113,7 @@ router.get('/post/:id', setCacheControl, ensureAuth, async (req, res) => {
               localField: "userId",
               foreignField: "_id",
               as: "commenterDetails",
-              pipeline: [{$project: {userId: 1,profilePic: 1}}]
+              pipeline: [{$project: {userId: 1,profilePic: 1,_id:1}}]
             }}
           ]
       },

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <title><%=profileInfo.userId %></title>
+    <title><%=profileInfo[0].userId %></title>
 </head>
 <body>
     <!-- heading -->
@@ -14,18 +14,18 @@
     <div class="container mb-5">
       <div class="row">
         <div class="col-6">
-            <img src="<%=profileInfo.profilePic%>" class="w-50 rounded-circle" alt="Profile image">
+            <img src="<%=profileInfo[0].profilePic%>" class="w-50 rounded-circle" alt="Profile image">
         </div>
         <div class="col-6">
-          <div class="mb-4"><i class="fa-solid fa-id-badge text-primary"></i> <%=profileInfo.userId %></div>
-          <div class="mb-4"><i class="fa-regular fa-envelope text-primary"></i> <%=profileInfo.email%></div>
-          <div class="mb-4"><i class="fa-solid fa-book text-primary"></i> <%=profileInfo.bio%> </div>
+          <div class="mb-4"><i class="fa-solid fa-id-badge text-primary"></i> <%=profileInfo[0].userId %></div>
+          <div class="mb-4"><i class="fa-regular fa-envelope text-primary"></i> <%=profileInfo[0].email%></div>
+          <div class="mb-4"><i class="fa-solid fa-book text-primary"></i> <%=profileInfo[0].bio%> </div>
         </div>
       </div>
     </div>
 
     <!-- If no posts -->
-    <%if(posts.length===0){%>
+    <%if(profileInfo[0].posts.length===0){%>
       <div class="container p-4">
         <h2>No made Posts, create your first post from here: <a href="/user/newpost">NEW POST</a></h2>
       </div>
@@ -33,24 +33,24 @@
 
     <!-- Your posts -->
     <div class="container">
-      <%for(let i=0;i<posts.length;i+=3){ %>
+      <%for(let i=0;i<profileInfo[0].posts.length;i+=3){ %>
       <div class="row m-4">
         <div class="col-4">
-          <a href="/user/post/<%=posts[i]._id%>">
-            <img src="<%= posts[i].image%>" class="w-100" alt="post images">
+          <a href="/user/post/<%=profileInfo[0].posts[i]._id%>">
+            <img src="<%= profileInfo[0].posts[i].image%>" class="w-100" alt="post images">
           </a>
         </div>
-        <%if(posts[i+1]!=undefined){%>
+        <%if(profileInfo[0].posts[i+1]!=undefined){%>
             <div class="col-4">
-              <a href="/user/post/<%=posts[i+1]._id%>">
-                <img src="<%= posts[i+1].image%>" class="w-100" alt="post images">
+              <a href="/user/post/<%=profileInfo[0].posts[i+1]._id%>">
+                <img src="<%= profileInfo[0].posts[i+1].image%>" class="w-100" alt="post images">
               </a>
             </div>
         <%}%>
-        <%if(posts[i+2]!=undefined){%>
+        <%if(profileInfo[0].posts[i+2]!=undefined){%>
             <div class="col-4">
-              <a href="/user/post/<%=posts[i+2]._id%>">
-                <img src="<%= posts[i+2].image%>" class="w-100" alt="post images">
+              <a href="/user/post/<%=profileInfo[0].posts[i+2]._id%>">
+                <img src="<%= profileInfo[0].posts[i+2].image%>" class="w-100" alt="post images">
               </a>
             </div>
         <%}%>
