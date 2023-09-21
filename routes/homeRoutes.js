@@ -191,7 +191,7 @@ router.post('/post/comment', async (req, res) => {
 // route to get data of guy who made the comment ( i was initially going to the route /post/getCommDetai which was resulting in hitting of the endpoint /post/:id and hence i was getting error )
 
 router.get('/post/comment/getCommenterDetails',async(req,res)=>{
-  const userDetails =await Users.findById(req.user.id).lean();
+  const userDetails =await Users.findById(req.user.id).lean(); 
   res.json({userId:userDetails.userId, profilePic: userDetails.profilePic })
 })
 

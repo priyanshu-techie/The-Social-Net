@@ -1,2 +1,4 @@
 # host the frontend and backend to different places 
 # PROJECT DISCRIPTION: A SOCIAL MEDIA APP WHERE YOU CAN SEE THE POSTS LIKE AND COMMENT AND SHARE
+# if a user has liked a post, even if he refreshes the post will be liked so that he cant relike 
+# used aggregation techniques to have a fast query.

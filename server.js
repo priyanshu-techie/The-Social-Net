@@ -3,6 +3,7 @@ const app=express();
 const connect =require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const homeRoutes = require('./routes/homeRoutes');
+const _404route = require('./routes/route404')
 const passport=require('./config/passport');
 const session=require('express-session');
 const MongoStore = require('connect-mongo');
@@ -48,6 +49,7 @@ process.on('unhandledRejection', error => {
 
 app.use('/',authRoutes);
 app.use('/user',homeRoutes);
+app.use('*',_404route)
 
 app.listen(PORT,()=>{
     console.log(`Server running at port ${PORT}`);
