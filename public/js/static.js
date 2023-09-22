@@ -12,7 +12,7 @@ async function increaseLike(elem){
         elem.classList.add('fa-solid');
         likes++;
         try{
-            await fetch(`/user/likePost/${postId}`,{ method:"PUT" } );
+            await fetch(`/user/post/likeIt/${postId}`,{ method:"PUT" } );
         }
         // if error occoured, discard the process
         catch(e){
@@ -27,7 +27,7 @@ async function increaseLike(elem){
         elem.classList.add('text-dark');
         likes--;
         try{
-            await fetch(`/user/unLikePost/${postId}`,{ method:"PUT" } );
+            await fetch(`/user/post/unlikeIt/${postId}`,{ method:"PUT" } );
         }
         // if error occoured, discard the process
         catch(e){
@@ -44,7 +44,7 @@ async function deletePost(elem){
     const parent=elem.parentNode
     const postId =parent.dataset.id
     try {
-        await fetch(`/user/deletePost/${postId}`,{method:"delete"})
+        await fetch(`/user/post/deleteIt/${postId}`,{method:"delete"})
         window.location.href='/user/feed';
     } catch (e) {
         console.error(e);
@@ -72,7 +72,7 @@ async function addComment(){
                 // the user who made the comment, this info the server can have from req.user 
             })
         })
-        input.value="";
+        input.value="";      
         
         // pushing the comment to the frontend
         const response = await fetch('/user/post/comment/getCommenterDetails'); // get details from current logged in user , caz he/she is only making the comment 
@@ -82,11 +82,52 @@ async function addComment(){
         newDiv.innerHTML= `
                     <div style="font-size: 0.7rem;"> <img src="${data.profilePic}" style="width:1em; margin-right: 1em;">${data.userId}</div> 
                     <p>${comment} </p>
+                    <p> <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseCommentLike(this)"></i> <span> 0 </span></p>   
         `
         commentsContainer.appendChild(newDiv);
     } catch (err) {
         console.error(err);
     }
     // frontend me commnet push kro 
+}
+
+async function increaseCommentLike(elem){
+    let parent=elem.parentNode;
+    let likeCount=parent.childNodes[3];
+    let likes=Number(likeCount.innerText);
+    let commentId =parent.dataset.id
+
+    // if not liked then :
+    if(elem.classList.contains('fa-regular')){
+        // frontend part
+        elem.classList.remove('fa-regular');
+        elem.classList.add('fa-solid');
+        elem.style.color="#ff0000"
+        likes++;
+        try{
+            await fetch(`/user/post/comment/likeComment/${commentId}`,{ method:"PUT" } );
+        }
+        // if error occoured, discard the process
+        catch(e){
+            console.error(e);
+            return;
+        }
+    }
+    // if want to undo the like:
+    else{
+        elem.classList.remove('fa-solid');
+        elem.classList.add('fa-regular');
+        elem.style.color="black";
+        likes--;
+        try{
+            await fetch(`/user/post/comment/unLikeComment/${commentId}`,{ method:"PUT" } );
+        }
+        // if error occoured, discard the process
+        catch(e){
+            console.error(e);
+            return;
+        }
+    }
+    likeCount.innerText=likes;
 }
 

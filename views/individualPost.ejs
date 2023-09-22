@@ -52,7 +52,8 @@
                             <a href="/user/profile/<%=comments[i].commenterDetails[0]._id%>">
                                 <div style="font-size: 0.7rem;"> <img src="<%=comments[i].commenterDetails[0].profilePic%>" alt="" style="width:1em; margin-right: 1em;"><%=comments[i].commenterDetails[0].userId%></div> 
                             </a>
-                            <p><%=comments[i].comment%> </p>   
+                            <p><%=comments[i].comment%> </p>
+                            <p data-id="<%=comments[i]._id%>"> <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseCommentLike(this)"></i> <span><%= comments[i].likes %></span></p>   
                         </div>
                     <%}%>
                 </div>

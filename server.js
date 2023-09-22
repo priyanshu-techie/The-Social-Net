@@ -3,6 +3,7 @@ const app=express();
 const connect =require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const homeRoutes = require('./routes/homeRoutes');
+const postRoutes = require('./routes/postRoutes')
 const _404route = require('./routes/route404')
 const passport=require('./config/passport');
 const session=require('express-session');
@@ -49,6 +50,7 @@ process.on('unhandledRejection', error => {
 
 app.use('/',authRoutes);
 app.use('/user',homeRoutes);
+app.use('/user/post',postRoutes);
 app.use('*',_404route)
 
 app.listen(PORT,()=>{
