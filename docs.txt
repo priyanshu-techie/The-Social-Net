@@ -1,0 +1,4 @@
+# HOW ARE THE POSTS LIKED BY YOU WILL BE DISPLAYED AS LIKED:
+    I maintain an array of users who liked a post and while loading the post, 
+    I check if the current user is in the array or not. If yes then show liked,
+    else not.

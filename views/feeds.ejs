@@ -25,16 +25,18 @@
                         <span style="font-size: 1rem;"><%=posts[i].postCreator[0].userId%></span>
                     </a>
                 </div>
+                <!-- post image -->
                 <a href="/user/post/<%= posts[i]._id%>">
                     <img src='<%= posts[i].image %>' class="w-100 " alt="">
                 </a>
                 <!-- likes and comment  -->
                 <div class="container">
                     <div class="row">
-                        <div class="col-2 fs-3" data-id="<%=posts[i]._id%>" >
+                        <div class="col-3 fs-3" data-id="<%=posts[i]._id%>" >
                             <i class="<%=posts[i].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i].likes%></span>
+                            <a href="/user/post/<%= posts[i]._id%>" class="ps-2 text-dark"><i class="fa-regular fa-comment"></i></a>
                         </div>
-                        <div class="col-10">
+                        <div class="col-9">
                             <div class="fs-6 "><%= posts[i].caption %></div>
                         </div>
                     </div>
@@ -49,16 +51,18 @@
                             <span style="font-size: 1rem;"><%=posts[i+1].postCreator[0].userId%></span>
                         </a>
                     </div>
+                    <!-- post image -->
                     <a href="/user/post/<%= posts[i+1]._id%>">
                         <img src="<%= posts[i+1].image%>" class="w-100 " alt="">
                     </a>
                     <!-- likes and comment  -->
                     <div class="container">
                         <div class="row">
-                            <div class="col-2 fs-3" data-id="<%=posts[i+1]._id%>">
+                            <div class="col-3 fs-3" data-id="<%=posts[i+1]._id%>">
                                 <i class="<%=posts[i+1].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color: #ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i+1].likes%></span>
+                                <a href="/user/post/<%= posts[i]._id%>" class="ps-2 text-dark"><i class="fa-regular fa-comment"></i></a>
                             </div>
-                            <div class="col-10">
+                            <div class="col-9">
                                 <div class="fs-6 "><%= posts[i+1].caption %></div>
                             </div>
                         </div>
