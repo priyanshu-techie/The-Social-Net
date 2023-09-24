@@ -20,6 +20,9 @@
           <div class="mb-4"><i class="fa-solid fa-id-badge text-primary"></i> <%=profileInfo[0].userId %></div>
           <div class="mb-4"><i class="fa-regular fa-envelope text-primary"></i> <%=profileInfo[0].email%></div>
           <div class="mb-4"><i class="fa-solid fa-book text-primary"></i> <%=profileInfo[0].bio%> </div>
+          <%if(profileId === currUser){%>
+            <a class="btn btn-primary" href="/user/edit/profile" role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
+          <%}%>
         </div>
       </div>
     </div>

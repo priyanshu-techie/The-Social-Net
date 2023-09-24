@@ -92,6 +92,7 @@ router.put('/likeIt/:id', async (req, res) => {
     }
   })
   
+  // delete post
   router.delete('/deleteIt/:id', async (req, res) => {
     let postId = req.params.id;
     try {
@@ -160,6 +161,15 @@ router.put('/likeIt/:id', async (req, res) => {
       res.status(500).send("some error occoured");
     }
   
+  })
+
+  router.delete('/comment/deleteComment/:commId',async(req,res)=>{
+    try {
+      await Comments.findByIdAndDelete(req.params.commId);
+      res.status(200).send('deleted successfully');
+    } catch (error) {
+      console.log(error);
+    }
   })
 
 

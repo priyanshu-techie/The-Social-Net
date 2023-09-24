@@ -23,7 +23,7 @@ router.get('/profile', setCacheControl, ensureAuth, async (req, res) => {
       }
     }
   ])
-  res.render('profilePage.ejs', { profileInfo });
+  res.render('profilePage.ejs', { profileInfo, profileId:req.user.id, currUser:req.user.id });
 })
 
 // get profile page of different users
@@ -41,7 +41,42 @@ router.get('/profile/:id', setCacheControl, ensureAuth, async (req, res) => {
       }
     }
   ])
-  res.render('profilePage.ejs', { profileInfo });
+  res.render('profilePage.ejs', { profileInfo ,profileId : req.params.id, currUser : req.user.id });
+})
+
+// edit your profile
+router.get('/edit/profile',async(req,res)=>{
+  let user = await Users.findById(req.user.id);
+  let err = {isError:false}
+  res.render('editProfile.ejs',{user, err});
+})
+
+// post the new profile details 
+router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{
+  try{
+    let user = await Users.findById(req.user.id);
+    // delete prior images 
+    await cloudinary.uploader.destroy(user.profilePicID);
+    // add new
+    const result = await cloudinary.uploader.upload(req.file.path);
+    
+    // change the bio and pic details
+    user.bio = req.body.newBio;
+    user.profilePic = result.secure_url;
+    user.profilePicID = result.public_id;
+  
+    await user.save();
+    res.redirect('/user/profile');
+  }
+  catch(e){
+    let user = await Users.findById(req.user.id);
+    console.log("error occored while uploading a new profile image", e);
+    let err ={
+      isError:true,
+      msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO , only .jpeg .jpg .webp .png files allowed. File size should be less than 10MB"
+    }
+    res.render('editProfile.ejs',{ user, err });
+  }
 })
 
 // get the feed 

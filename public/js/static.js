@@ -131,3 +131,16 @@ async function increaseCommentLike(elem){
     likeCount.innerText=likes;
 }
 
+
+async function deleteComment(elem){
+    let parent=elem.parentNode;
+    let commentId =parent.dataset.id;
+    let commentBox = parent.parentNode;
+    
+    try {
+        await fetch(`/user/post/comment/deleteComment/${commentId}`,{method:'Delete'});
+        commentBox.remove();
+    } catch (error) {
+        console.log('failed to delete! try again');
+    }
+}
