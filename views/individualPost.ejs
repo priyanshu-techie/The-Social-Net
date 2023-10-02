@@ -17,7 +17,7 @@
     <div class="container">
         <div class="row">
             <!-- post  -->
-            <div class="col-8">
+            <div class="col-lg-8 col-md-12">
                 <!-- top profile info -->
                 <div class="mb-2">
                     <a href="/user/profile/<%=post.postCreator[0]._id%>">
@@ -45,8 +45,16 @@
                 </div>
             </div>
             <!-- comments -->
-            <div class="col-4">
-                <div id="commentsContainer" class="m-4 border border-solid p-2" style="overflow: scroll; height:30rem;">
+            <div class="col-lg-4 col-md-12 d-flex flex-column">
+                <!-- add new comment -->
+                <div class="w-100 order-lg-2 " data-id="<%=post._id%>">
+                        <input type="text" placeholder="Type your comments here" style="width: 80%;" id="commentBox" >
+                        <button style="width: 18%;" onclick="addComment()">
+                            <i class="fa-solid fa-angles-right text-primary bg-white"></i>
+                        </button>
+                </div>
+                <!-- view comments container  -->
+                <div id="commentsContainer" class="m-4 border border-solid p-2 order-lg-1" style="overflow: scroll; height:30rem;">
                     <%for(let i=0;i<comments.length;i++){%>
                         <div>
                             <a href="/user/profile/<%=comments[i].commenterDetails[0]._id%>">
@@ -62,12 +70,6 @@
                                 </p>   
                         </div>
                     <%}%>
-                </div>
-                <div class="w-100" data-id="<%=post._id%>">
-                        <input type="text" placeholder="Type your comments here" style="width: 80%;" id="commentBox" >
-                        <button style="width: 18%;" onclick="addComment()">
-                            <i class="fa-solid fa-angles-right text-primary bg-white"></i>
-                        </button>
                 </div>
             </div>
         </div>
