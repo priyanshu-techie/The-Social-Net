@@ -47,9 +47,9 @@
             <!-- comments -->
             <div class="col-lg-4 col-md-12 d-flex flex-column">
                 <!-- add new comment -->
-                <div class="w-100 order-lg-2 " data-id="<%=post._id%>">
-                        <input type="text" placeholder="Type your comments here" style="width: 80%;" id="commentBox" >
-                        <button style="width: 18%;" onclick="addComment()">
+                <div class="w-100 order-lg-2 position-relative" data-id="<%=post._id%>">
+                        <textarea rows="2" placeholder="Type your comments here" id="commentBox" style="width: 80%; resize: none;"></textarea>
+                        <button style="width: 18%;" class="position-absolute end-0" onclick="addComment()">
                             <i class="fa-solid fa-angles-right text-primary bg-white"></i>
                         </button>
                 </div>
