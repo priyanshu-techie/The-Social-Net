@@ -17,7 +17,7 @@
     <form action="/user/addNewPost" method="post" class="m-5 w-75 ps-5 " enctype="multipart/form-data">
         <div class="mb-3">
             <label for="newPost" class="form-label">Image</label>
-            <input id="newPost" class="form-control" name="newPost" type="file" required>
+            <input id="newPost" class="form-control" name="newPost" type="file" required onchange="handleImageCompress(event)">
         </div>
         <div class="mb-3">
             <label for="caption" class="form-label">Captions </label>
@@ -25,4 +25,9 @@
         </div>
         <button type="submit" class="btn btn-primary">Upload</button>
     </form>
+
+    <!-- in browser commpression -->
+    <script type="text/javascript"
+    src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
+
     <%- include('components/footer') %>

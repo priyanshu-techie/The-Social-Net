@@ -26,7 +26,7 @@
                 <div class="col-6">
                     <div class="mb-3">
                         <label for="newProfile" class="form-label">Select New Profile Image : </label>
-                        <input id="newProfile" class="form-control" name="newProfile" type="file">
+                        <input id="newProfile" class="form-control" name="newProfile" type="file" onchange="handleImageCompress(event)">
                     </div>
                 </div>
                 <div class="col-6">
@@ -41,6 +41,9 @@
         </div>
     </form>
 
+    <!-- in browser commpression -->
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.1/dist/browser-image-compression.js"></script>
 
 
 
