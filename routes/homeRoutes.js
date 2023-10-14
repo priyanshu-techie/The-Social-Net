@@ -52,28 +52,42 @@ router.get('/edit/profile',async(req,res)=>{
 })
 
 // post the new profile details 
-router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{
+router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{  // multer automatically handles the situation of no file reacieved
   try{
     let user = await Users.findById(req.user.id);
-    // delete prior images 
-    await cloudinary.uploader.destroy(user.profilePicID);
-    // add new
-    const result = await cloudinary.uploader.upload(req.file.path);
-    
-    // change the bio and pic details
+    // if file has been sent 
+    if(req.file){
+      // delete prior images 
+      await cloudinary.uploader.destroy(user.profilePicID);
+      // add new
+      const result = await cloudinary.uploader.upload(req.file.path);
+      
+      // change the bio and pic details
+      user.profilePic = result.secure_url;
+      user.profilePicID = result.public_id;
+    }
     user.bio = req.body.newBio;
-    user.profilePic = result.secure_url;
-    user.profilePicID = result.public_id;
   
     await user.save();
     res.redirect('/user/profile');
   }
   catch(e){
     let user = await Users.findById(req.user.id);
-    console.log("error occored while uploading a new profile image", e);
-    let err ={
-      isError:true,
-      msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO , only .jpeg .jpg .webp .png files allowed. File size should be less than 10MB"
+    let err;
+    // if file has been sent 
+    if(req.file){
+      console.log("error occored while uploading a new profile image", e);
+      err ={
+        isError:true,
+        msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO , only .jpeg .jpg .webp .png files allowed. File size should be less than 10MB"
+      }
+    }
+    else{
+      console.log(e);
+      err ={
+        isError:true,
+        msg:"Some error occoured!! Try Again."
+      }
     }
     res.render('editProfile.ejs',{ user, err });
   }
