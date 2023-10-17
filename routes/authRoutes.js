@@ -100,7 +100,10 @@ router.post('/signup',async (req,res)=>{
                 lastName : req.body.lastName,
                 email : req.body.email,
                 salt : passDetails.salt,
-                hash : passDetails.hash
+                hash : passDetails.hash,
+                bio : "Hey there! I am using the social net.",
+                profilePic :"https://res.cloudinary.com/dubekbvdh/image/upload/ar_1:1,c_fill,g_auto,r_max,w_1000/v1697452712/no_pro_bcq7ws.png",
+                profilePicID :"no_pro_bcq7ws"
             }
         );
         // passport functionality

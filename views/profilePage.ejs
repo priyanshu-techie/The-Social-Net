@@ -14,12 +14,13 @@
     <div class="container mb-5">
       <div class="row">
         <div class="col-6">
-            <img src="<%=profileInfo[0].profilePic%>" class="w-50 rounded-circle" alt="Profile image">
+            <img src="<%=newUrl%>" class="w-50 rounded-circle" alt="Profile image">
         </div>
         <div class="col-6">
           <div class="mb-4"><i class="fa-solid fa-id-badge text-primary"></i> <%=profileInfo[0].userId %></div>
           <div class="mb-4"><i class="fa-regular fa-envelope text-primary"></i> <%=profileInfo[0].email%></div>
           <div class="mb-4"><i class="fa-solid fa-book text-primary"></i> <%=profileInfo[0].bio%> </div>
+          <!-- can edit if the owner  -->
           <%if(profileId === currUser){%>
             <a class="btn btn-primary" href="/user/edit/profile" role="button"><i class="fa-regular fa-pen-to-square"></i> Edit</a>
           <%}%>

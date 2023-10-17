@@ -6,24 +6,38 @@ const { ensureAuth, setCacheControl } = require('../utils/middlewares');
 const upload = require('../config/multer');
 const cloudinary = require('../config/cloudinary');
 const mongoose = require('mongoose')
+const urlModifier = require('../utils/tools');
 
 
-// get the profile page
+// NOTE: aggregation results in an Array (dont try to access the object directly )
+
+// get the profile page of the owner 
 router.get('/profile', setCacheControl, ensureAuth, async (req, res) => {
-  let objIdOfCurrUser = new mongoose.Types.ObjectId(req.user.id);
-  let profileInfo = await Users.aggregate([
-    {$match:{ _id : objIdOfCurrUser }},
-    {$lookup:
-      {
-        from: 'posts',
-        localField: '_id',
-        foreignField: 'user',
-        as: 'posts',
-        pipeline:[{$sort:{createdAt:-1}}]
-      }
-    }
-  ])
-  res.render('profilePage.ejs', { profileInfo, profileId:req.user.id, currUser:req.user.id });
+  try {
+      // just passing the id as string is not working hence created mognoose objectID 
+      let objIdOfCurrUser = new mongoose.Types.ObjectId(req.user.id);
+      let profileInfo = await Users.aggregate([
+        {$match:{ _id : objIdOfCurrUser }},
+        {$lookup:
+          {
+            from: 'posts',
+            localField: '_id',
+            foreignField: 'user',
+            as: 'posts',
+            pipeline:[{$sort:{createdAt:-1}}]
+          }
+        }
+      ])
+
+      console.log(req.user.id);
+      // getting the transfromed url for the profile image 
+      let newUrl = urlModifier(profileInfo[0].profilePic)
+      res.render('profilePage.ejs', { profileInfo, profileId:req.user.id, currUser:req.user.id, newUrl });
+    
+  } catch (error) {
+    console.log(error);
+    res.redirect('/user/feed');
+  }
 })
 
 // get profile page of different users
@@ -41,7 +55,8 @@ router.get('/profile/:id', setCacheControl, ensureAuth, async (req, res) => {
       }
     }
   ])
-  res.render('profilePage.ejs', { profileInfo ,profileId : req.params.id, currUser : req.user.id });
+  let newUrl = urlModifier(profileInfo[0].profilePic)
+  res.render('profilePage.ejs', { profileInfo ,profileId : req.params.id, currUser : req.user.id, newUrl  });
 })
 
 // edit your profile
@@ -128,6 +143,10 @@ router.get('/feed', setCacheControl, ensureAuth, async (req, res) => {
       */
     }
   ])
+  // changing the url to modified 
+  posts.forEach(e=>{
+    e.postCreator[0].profilePic = urlModifier(e.postCreator[0].profilePic);
+  })
   res.render('feeds.ejs', { posts, currUser: req.user.id });
 
 })
