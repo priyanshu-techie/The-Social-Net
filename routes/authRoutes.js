@@ -91,9 +91,16 @@ router.post('/signup',async (req,res)=>{
         if(user.length!=0){
             return res.render('signup',{err:true,msg:"User already exists! Try another email or Login if have an account. "})
         }
+
+        // if userId already exists then
+        const userID=await Users.find({userId:req.body.userId});
+        if(userID.length!=0){
+            return res.render('signup',{err:true,msg:`User Id = ${req.body.userId} already exists! Try another User Id. `})
+        }
+
         // if everything is fine then save the data in the database and redirect to the protected page 
         const passDetails=await genPassword(req.body.password);
-        const newUser=await Users.collection.insertOne(
+        const newUser=await Users.create(
             {
                 userId : req.body.userId,
                 firstName : req.body.firstName,

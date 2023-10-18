@@ -29,7 +29,6 @@ router.get('/profile', setCacheControl, ensureAuth, async (req, res) => {
         }
       ])
 
-      console.log(req.user.id);
       // getting the transfromed url for the profile image 
       let newUrl = urlModifier(profileInfo[0].profilePic)
       res.render('profilePage.ejs', { profileInfo, profileId:req.user.id, currUser:req.user.id, newUrl });
@@ -175,7 +174,8 @@ router.post('/addNewPost', upload.single("newPost"), async (req, res) => {
     res.redirect("/user/profile");
 
   } catch (err) {
-    req.flash('errors', "Some error occoured. Try again !");
+    console.log("error while uploading a new post ", err);
+    req.flash('errors', "Some error occoured! File size may be too large. Try again with a smaller file.\n Only images allowed.");
     return res.redirect('/user/newpost');
   }
 })
