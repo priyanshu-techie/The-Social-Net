@@ -41,21 +41,27 @@ router.get('/profile', setCacheControl, ensureAuth, async (req, res) => {
 
 // get profile page of different users
 router.get('/profile/:id', setCacheControl, ensureAuth, async (req, res) => {
-  let objIdOfCurrUser = new mongoose.Types.ObjectId(req.params.id);
-  let profileInfo = await Users.aggregate([
-    {$match:{ _id : objIdOfCurrUser }},
-    {$lookup:
-      {
-        from: 'posts',
-        localField: '_id',
-        foreignField: 'user',
-        as: 'posts',
-        pipeline:[{$sort:{createdAt:-1}}]
+  try{
+    let objIdOfCurrUser = new mongoose.Types.ObjectId(req.params.id);
+    let profileInfo = await Users.aggregate([
+      {$match:{ _id : objIdOfCurrUser }},
+      {$lookup:
+        {
+          from: 'posts',
+          localField: '_id',
+          foreignField: 'user',
+          as: 'posts',
+          pipeline:[{$sort:{createdAt:-1}}]
+        }
       }
-    }
-  ])
-  let newUrl = urlModifier(profileInfo[0].profilePic)
-  res.render('profilePage.ejs', { profileInfo ,profileId : req.params.id, currUser : req.user.id, newUrl  });
+    ])
+    let newUrl = urlModifier(profileInfo[0].profilePic)
+    res.render('profilePage.ejs', { profileInfo ,profileId : req.params.id, currUser : req.user.id, newUrl  });
+  }
+  catch(err){
+    console.error(err);
+    res.status(500).redirect('/user/feed');
+  }
 })
 
 // edit your profile
@@ -175,7 +181,7 @@ router.post('/addNewPost', upload.single("newPost"), async (req, res) => {
 
   } catch (err) {
     console.log("error while uploading a new post ", err);
-    req.flash('errors', "Some error occoured! File size may be too large. Try again with a smaller file.\n Only images allowed.");
+    req.flash('errors', "Some error occoured! Try again. NOTE - Only images allowed.");
     return res.redirect('/user/newpost');
   }
 })
