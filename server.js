@@ -22,7 +22,6 @@ require("dotenv").config({path:"./config/.env"});
 
 connect();
 
-app.use(flash());
 app.set('view engine','ejs');
 
 // settin passport js 
@@ -40,8 +39,12 @@ app.use(session({
   }
 }));
 
+
 // setting passport session
 app.use(passport.authenticate('session'));
+
+// flash uses session, so it should be after it 
+app.use(flash());
 
 // it cathes the error of any async operation which doesnt has a catch part
 process.on('unhandledRejection', error => {

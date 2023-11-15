@@ -7,7 +7,7 @@ const upload = require('../config/multer');
 const cloudinary = require('../config/cloudinary');
 const mongoose = require('mongoose')
 const urlModifier = require('../utils/tools');
-
+const fs = require("fs");
 
 // NOTE: aggregation results in an Array (dont try to access the object directly )
 
@@ -165,10 +165,29 @@ router.get('/newpost', setCacheControl, ensureAuth, (req, res) => {
 
 // adding new post 
 router.post('/addNewPost', upload.single("newPost"), async (req, res) => {
+  // TO HANDLE THE ERROR IN MULTER WHILE UPLOADING , USED A JUGAD:
+  // * from multer config , sending everythings fine , 
+  // * in the req object sending an error msg
+  // * because of this the wrong file is being sent to my computer (server) local folder , 
+  // * hence after printing the eror in the frontend also delete the wrong file from the server using the path of the file 
+
+  // NOTE , NOT A GOOD IDEA BUT , IT MAY GIVE ME TROUBLES
   try {
+
+    // console.log("File at ", req.file.path);
+
+    if(req.multerError){ // custom error i sent 
+      fs.unlinkSync(req.file.path);
+      console.log("error",req.multerError);
+      await req.flash("errors", "Some error occoured! Try again. NOTE - Only images allowed.");
+      res.redirect('/user/newpost');
+      return;
+    }
+
     // Upload image to cloudinary
     const result = await cloudinary.uploader.upload(req.file.path);
-
+    // delete the file from the local system as now not needed 
+    fs.unlinkSync(req.file.path);
     // creating new user
     await PostModel.create({
       image: result.secure_url,
@@ -176,6 +195,7 @@ router.post('/addNewPost', upload.single("newPost"), async (req, res) => {
       caption: req.body.caption,
       user: req.user.id
     })
+
     console.log("Post has been added!");
     res.redirect("/user/profile");
 
