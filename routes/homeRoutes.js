@@ -68,7 +68,7 @@ router.get('/profile/:id', setCacheControl, ensureAuth, async (req, res) => {
 router.get('/edit/profile',async(req,res)=>{
   let user = await Users.findById(req.user.id);
   let err = {isError:false}
-  res.render('editProfile.ejs',{user, err});
+  res.render('editProfile.ejs',{bio:user.bio, err});
 })
 
 // post the new profile details 
@@ -77,6 +77,17 @@ router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{  // mu
     let user = await Users.findById(req.user.id);
     // if file has been sent 
     if(req.file){
+      // for info about these 👇👇 see the comments at /addNewPost route 
+      if(req.multerError){ // custom error i sent 
+        fs.unlinkSync(req.file.path);
+        console.log("error",req.multerError);
+        err ={
+          isError:true,
+          msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO. Only .jpeg .jpg .webp .png files allowed."
+        }
+        res.render('editProfile.ejs',{bio:user.bio,err})
+        return;
+      }
       // delete prior images 
       await cloudinary.uploader.destroy(user.profilePicID);
       // add new
@@ -99,7 +110,7 @@ router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{  // mu
       console.log("error occored while uploading a new profile image", e);
       err ={
         isError:true,
-        msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO , only .jpeg .jpg .webp .png files allowed. File size should be less than 10MB"
+        msg:"Some error occoured!! Try Again. Note: You can't upload a VIDEO , only .jpeg .jpg .webp .png files allowed."
       }
     }
     else{
