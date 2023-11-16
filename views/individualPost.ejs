@@ -36,13 +36,13 @@
                     <!-- likes and delete  -->
                     <div class="container">
                         <div class="row">
-                            <div class="col-2 fs-3" data-id="<%=post._id%>">
+                            <div class="col-3 fs-3" data-id="<%=post._id%>">
                                 <i class="<%=post.likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart"
                                     style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span>
                                     <%= post.likes %>
                                 </span>
                             </div>
-                            <div class="col-8">
+                            <div class="col-7">
                                 <div>
                                     <%=post.caption%>
                                 </div>
