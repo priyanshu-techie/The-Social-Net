@@ -161,7 +161,7 @@ async function handleImageCompress(event) {
     const imageFile = event.target.files[0];
     console.log(`originalFile size: ${imageFile.size / 1024 / 1024} MB`);
     const options = {
-        maxSizeMB: 2,
+        maxSizeMB: 1,
         useWebWorker: true,
     }
     try {
