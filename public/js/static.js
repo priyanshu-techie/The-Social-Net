@@ -58,10 +58,12 @@ async function addComment() {
     const comment = input.value;
     // if the comment is empty with just spaces then return
     if (comment.replace(/\s/g, '') === "") { input.value = ""; return; }
+    input.value = "";
 
     const postId = input.parentElement.dataset.id;
+    
     try {
-        await fetch('/user/post/comment', {
+        const response1= await fetch('/user/post/comment', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json'
@@ -71,18 +73,28 @@ async function addComment() {
                 postId: postId
                 // the user who made the comment, this info the server can have from req.user 
             })
-        })
-        input.value = "";
+        });
+        const commentIdJson = await response1.json();
+        const commentId = commentIdJson.commId;
 
         // pushing the comment to the frontend
-        const response = await fetch('/user/post/comment/getCommenterDetails'); // get details from current logged in user , caz he/she is only making the comment 
-        const data = await response.json();
-
+        const response2 = await fetch('/user/post/comment/getCommenterDetails'); // get details from current logged in user , caz he/she is only making the comment 
+        const data = await response2.json();
+        
         let newDiv = document.createElement('div');
         newDiv.innerHTML = `
-                    <div style="font-size: 0.7rem;"> <img src="${data.profilePic}" style="width:1em; margin-right: 1em;">${data.userId}</div> 
+                    <a href="/user/profile/${data.id}">
+                        <div style="font-size: 0.7rem;"> 
+                            <img src="${data.profilePic}" style="width:1em; margin-right: 1em;">
+                            ${data.userId}
+                        </div> 
+                    </a> 
                     <p>${comment} </p>
-                    <p> <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseCommentLike(this)"></i> <span> 0 </span></p>   
+                    <p data-id="${commentId}"> 
+                        <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseCommentLike(this)"></i> 
+                        <span> 0 </span>
+                        <i class="fa-solid fa-trash text-primary" style="cursor:pointer;" onclick="deleteComment(this)"></i>
+                    </p>   
         `
         commentsContainer.appendChild(newDiv);
     } catch (err) {

@@ -1,79 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <title>post</title>
     <style>
-        a{
-          text-decoration: none;
+        a {
+            text-decoration: none;
         }
-      </style>
+    </style>
 </head>
+
 <body>
     <%- include('components/header') %>
 
-    <div class="container">
-        <div class="row">
-            <!-- post  -->
-            <div class="col-lg-8 col-md-12">
-                <!-- top profile info -->
-                <div class="mb-2">
-                    <a href="/user/profile/<%=post.postCreator[0]._id%>">
-                        <img src="<%=post.postCreator[0].profilePic%>" class="rounded-circle" style="width: 1.5rem;" alt="profile image">
-                        <span style="font-size: 1rem;"><%=post.postCreator[0].userId%></span>
-                    </a>
-                </div>
+        <div class="container">
+            <div class="row">
+                <!-- post  -->
+                <div class="col-lg-8 col-md-12">
+                    <!-- top profile info -->
+                    <div class="mb-2">
+                        <a href="/user/profile/<%=post.postCreator[0]._id%>">
+                            <img src="<%=post.postCreator[0].profilePic%>" class="rounded-circle" style="width: 1.5rem;"
+                                alt="profile image">
+                            <span style="font-size: 1rem;">
+                                <%=post.postCreator[0].userId%>
+                            </span>
+                        </a>
+                    </div>
 
-                <img src="<%=post.image%>" class="w-100 " alt="">
-                <!-- likes and delete  -->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-2 fs-3" data-id="<%=post._id%>" >
-                            <i class="<%=post.likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span><%= post.likes %></span>
-                        </div>
-                        <div class="col-8">
-                            <div> <%=post.caption%> </div>
-                        </div>
-                        <%if(post.user.toString()===currUser){%>
-                            <div class="col-2" data-id="<%=post._id%>" style="cursor: pointer;" >
-                                <i class="fa-solid fa-trash text-primary fs-3 mt-2" onclick="deletePost(this)"></i>
+                    <img src="<%=post.image%>" class="w-100 " alt="">
+                    <!-- likes and delete  -->
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2 fs-3" data-id="<%=post._id%>">
+                                <i class="<%=post.likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart"
+                                    style="cursor: pointer; color:#ff0000;" onclick="increaseLike(this)"></i> <span>
+                                    <%= post.likes %>
+                                </span>
                             </div>
-                        <%}%>
+                            <div class="col-8">
+                                <div>
+                                    <%=post.caption%>
+                                </div>
+                            </div>
+                            <%if(post.user.toString()===currUser){%>
+                                <div class="col-2" data-id="<%=post._id%>" style="cursor: pointer;">
+                                    <i class="fa-solid fa-trash text-primary fs-3 mt-2" onclick="deletePost(this)"></i>
+                                </div>
+                                <%}%>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- comments -->
-            <div class="col-lg-4 col-md-12 d-flex flex-column">
-                <!-- add new comment -->
-                <div class="w-100 order-lg-2 position-relative" data-id="<%=post._id%>">
-                        <textarea rows="2" placeholder="Type your comments here" id="commentBox" style="width: 80%; resize: none;"></textarea>
+                <!-- comments -->
+                <div class="col-lg-4 col-md-12 d-flex flex-column">
+                    <!-- add new comment -->
+                    <div class="w-100 order-lg-2 position-relative" data-id="<%=post._id%>">
+                        <textarea rows="2" placeholder="Type your comments here" id="commentBox"
+                            style="width: 80%; resize: none;"></textarea>
                         <button style="width: 18%;" class="position-absolute end-0" onclick="addComment()">
                             <i class="fa-solid fa-angles-right text-primary bg-white"></i>
                         </button>
-                </div>
-                <!-- view comments container  -->
-                <div id="commentsContainer" class="m-4 border border-solid p-2 order-lg-1" style="overflow: scroll; height:30rem;">
-                    <%for(let i=0;i<comments.length;i++){%>
-                        <div>
-                            <a href="/user/profile/<%=comments[i].commenterDetails[0]._id%>">
-                                <div style="font-size: 0.7rem;"> <img src="<%=comments[i].commenterDetails[0].profilePic%>" alt="" style="width:1em; margin-right: 1em;"><%=comments[i].commenterDetails[0].userId%></div> 
-                            </a>
-                            <p><%=comments[i].comment%> </p>
-                            <p data-id="<%=comments[i]._id%>">
-                                 <i class="fa-regular fa-heart" style="cursor: pointer;" onclick="increaseCommentLike(this)"></i> 
-                                 <span><%= comments[i].likes %></span>
-                                 <%if(String(post.postCreator[0]._id) === String(currUser) || String(comments[i].userId)===String(currUser)){%>
-                                    <i class="fa-solid fa-trash text-primary" style="cursor:pointer;" onclick="deleteComment(this)"></i>
-                                 <%}%>
-                                </p>   
-                        </div>
-                    <%}%>
+                    </div>
+                    <!-- view comments container  -->
+                    <div id="commentsContainer" class="m-4 border border-solid p-2 order-lg-1"
+                        style="overflow: scroll; height:30rem;">
+                        <%for(let i=0;i<comments.length;i++){%>
+                            <div>
+                                <a href="/user/profile/<%=comments[i].commenterDetails[0]._id%>">
+                                    <div style="font-size: 0.7rem;"> <img
+                                            src="<%=comments[i].commenterDetails[0].profilePic%>" alt=""
+                                            style="width:1em; margin-right: 1em;">
+                                        <%=comments[i].commenterDetails[0].userId%>
+                                    </div>
+                                </a>
+                                <p>
+                                    <%=comments[i].comment%>
+                                </p>
+                                <p data-id="<%=comments[i]._id%>">
+                                    <i class="fa-regular fa-heart" style="cursor: pointer;"
+                                        onclick="increaseCommentLike(this)"></i>
+                                    <span>
+                                        <%= comments[i].likes %>
+                                    </span>
+                                    <!-- if the person is the post owner , or is the comment creator then show the delete buttom -->
+                                    <%if(String(post.postCreator[0]._id)===String(currUser) ||
+                                        String(comments[i].userId)===String(currUser)){%>
+                                        <i class="fa-solid fa-trash text-primary" style="cursor:pointer;"
+                                            onclick="deleteComment(this)"></i>
+                                    <%}%>
+                                </p>
+                            </div>
+                            <%}%>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <%- include('components/footer') %>
+        <%- include('components/footer') %>

@@ -116,7 +116,7 @@ router.put('/likeIt/:id', async (req, res) => {
       })
       console.log("comment added");
   
-      res.status(200).send(newComment.id);
+      res.status(200).json({commId : newComment.id});
     }
     catch (e) { console.log(e) }
   })
@@ -125,7 +125,7 @@ router.put('/likeIt/:id', async (req, res) => {
   
   router.get('/comment/getCommenterDetails',async(req,res)=>{
     const userDetails =await Users.findById(req.user.id).lean(); 
-    res.json({userId:userDetails.userId, profilePic: userDetails.profilePic })
+    res.json({id:req.user.id,userId:userDetails.userId, profilePic: userDetails.profilePic })
   })
   
 
