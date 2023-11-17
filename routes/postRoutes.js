@@ -97,6 +97,10 @@ router.put('/likeIt/:id', async (req, res) => {
     let postId = req.params.id;
     try {
       let post = await PostModel.findById(postId);
+      if(post.user!==req.user){
+        res.status(400).send('not allowed to delete a post you dont own');
+        return;
+      }
       await cloudinary.uploader.destroy(post.cloudinaryId);
       await PostModel.findByIdAndDelete(postId);
       // delete all the comments of the post 
