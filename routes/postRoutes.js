@@ -97,7 +97,8 @@ router.put('/likeIt/:id', async (req, res) => {
     let postId = req.params.id;
     try {
       let post = await PostModel.findById(postId);
-      if(post.user!==req.user){
+      if(post.user.toString()!==req.user.id){
+        console.log(`inappropriately user ${req.user.id} is trying to delete someone else post`);
         res.status(400).send('not allowed to delete a post you dont own');
         return;
       }
