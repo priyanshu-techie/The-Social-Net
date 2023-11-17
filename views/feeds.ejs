@@ -60,7 +60,7 @@
                         <div class="row">
                             <div class="col-4 fs-3" data-id="<%=posts[i+1]._id%>">
                                 <i class="<%=posts[i+1].likedBy.some(e=>e.toString()===currUser)?'fa-solid' : 'fa-regular text-dark' %> fa-heart" style="cursor: pointer; color: #ff0000;" onclick="increaseLike(this)"></i> <span><%=posts[i+1].likes%></span>
-                                <a href="/user/post/<%= posts[i]._id%>" class="ps-2 text-dark"><i class="fa-regular fa-comment"></i></a>
+                                <a href="/user/post/<%= posts[i+1]._id%>" class="ps-2 text-dark"><i class="fa-regular fa-comment"></i></a>
                             </div>
                             <div class="col-8">
                                 <div class="fs-6 "><%= posts[i+1].caption %></div>
