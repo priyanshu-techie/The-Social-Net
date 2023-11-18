@@ -126,44 +126,51 @@ router.post('/edit/profile',upload.single('newProfile'),async(req,res)=>{  // mu
 
 // get the feed 
 router.get('/feed', setCacheControl, ensureAuth, async (req, res) => {
-  let posts = await PostModel.aggregate([
-    // sort the items in desending 
-    {
-      $sort: { "createdAt": -1 }
-    },
-    // using the users document to get the post creator
-    {
-      $lookup:
+  try{
+
+    let posts = await PostModel.aggregate([
+      // sort the items in desending 
       {
-        from: "users",
-        localField: "user",
-        foreignField: "_id",
-        as: "postCreator",
-        pipeline: [
-          {
-            $project: {
-              userId: 1,
-              profilePic: 1,
-              _id:1
+        $sort: { "createdAt": -1 }
+      },
+      // using the users document to get the post creator
+      {
+        $lookup:
+        {
+          from: "users",
+          localField: "user",
+          foreignField: "_id",
+          as: "postCreator",
+          pipeline: [
+            {
+              $project: {
+                userId: 1,
+                profilePic: 1,
+                _id:1
+              },
             },
-          },
-        ],
+          ],
+        }
+        /**
+               * from: The target collection.
+               * localField: The local join field.
+               * foreignField: The target join field.
+               * as: The name for the results.
+               * pipeline: Optional pipeline to run on the foreign collection.
+               * let: Optional variables to use in the pipeline field stages.
+        */
       }
-      /**
-             * from: The target collection.
-             * localField: The local join field.
-             * foreignField: The target join field.
-             * as: The name for the results.
-             * pipeline: Optional pipeline to run on the foreign collection.
-             * let: Optional variables to use in the pipeline field stages.
-      */
-    }
-  ])
-  // changing the url to modified 
-  posts.forEach(e=>{
-    e.postCreator[0].profilePic = urlModifier(e.postCreator[0].profilePic);
-  })
-  res.render('feeds.ejs', { posts, currUser: req.user.id });
+    ])
+    // changing the url to modified 
+    posts.forEach(e=>{
+      e.postCreator[0].profilePic = urlModifier(e.postCreator[0].profilePic);
+    })
+    res.render('feeds.ejs', { posts, currUser: req.user.id });
+  }
+  catch(e){
+    console.log(e);
+    res.send("some error occoured, try again");
+  }
 
 })
 
